@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class VRegistrationPage extends StatefulWidget {
   @override
   _VRegistrationPageState createState() => _VRegistrationPageState();
@@ -9,9 +8,15 @@ class VRegistrationPage extends StatefulWidget {
 class _VRegistrationPageState extends State<VRegistrationPage> {
   String _selectedPreference = '';
   String _selectedFee = '';
+  bool _showHourlyRateSection = false; // Track whether to show the hourly rate section or not
 
   List<String> _preferences = ['Individual', 'Group', 'Both'];
   List<String> _fees = ["I'm volunteer", "I'm freelancing"];
+  List<String> _hourlyRates = [
+    '1-100 ETB/hour',
+    '100-200 ETB/hour',
+    '>200 ETB/hour',
+  ];
 
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
@@ -67,9 +72,19 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
               _buildRadioButtons(_fees, (value) {
                 setState(() {
                   _selectedFee = value;
+                  _showHourlyRateSection = value == "I'm freelancing";
                 });
               }),
             ),
+            if (_showHourlyRateSection) ...[
+              SizedBox(height: 16.0),
+              _buildFormGroup(
+                'Hourly Rate',
+                _buildRadioButtons(_hourlyRates, (value) {
+                  // Do something with the selected hourly rate
+                }),
+              ),
+            ],
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
@@ -134,7 +149,6 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
       );
     }).toList();
   }
-
 
   @override
   void dispose() {
