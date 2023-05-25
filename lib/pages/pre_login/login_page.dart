@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:lets_com/pages/pre_login/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -90,7 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.blue,
                     ),
                     // Add register button press handler here
-                    recognizer: TapGestureRecognizer()..onTap = () {},
+                    recognizer: TapGestureRecognizer()..onTap = () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyOptionsPage()),
+                      );
+                    },
                   ),
                 ],
               ),
