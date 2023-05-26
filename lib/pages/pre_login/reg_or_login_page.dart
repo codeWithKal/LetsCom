@@ -19,30 +19,72 @@ class _LoginOrRegPageState extends State<LoginOrRegPage> {
       appBar: AppBar(
         title: Text('Login or Registration'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Text('Login'),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/Letscom.png'),
+                fit: BoxFit.cover,
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyOptionsPage()),
-                );
-              },
-              child: Text('Registration'),
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.3), // Adjust the opacity as needed
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      child: Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white.withOpacity(0.5),
+                      onPrimary: Colors.black,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyOptionsPage()),
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      child: Text(
+                        'Register for free',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white.withOpacity(0.5),
+                      onPrimary: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,

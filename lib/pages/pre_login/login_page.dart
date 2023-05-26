@@ -30,78 +30,115 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("LetsCom, your assistance!"),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/Letscom.png'), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "LetsCom, your assistance!",
+                style: TextStyle(color: Colors.white),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                ),
+                style: TextStyle(color: Colors.white),
               ),
-            ),
-            SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: () {
-                // Handle login button press
-              },
-              child: Text('Login'),
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  onPressed: () {
-                    // Handle Google sign-in button press
-                  },
-                  child: Text('Sign in with Google'),
+              SizedBox(height: 16.0),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
-                SizedBox(width: 16.0),
-                OutlinedButton(
-                  onPressed: () {
-                    // Handle Facebook sign-in button press
-                  },
-                  child: Text('Sign in with Facebook'),
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 32.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle login button press
+                },
+                child: Text('Login', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue, // Example button color
                 ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'Don\'t have an account? ',
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextSpan(
-                    text: 'Register',
-                    style: TextStyle(
-                      color: Colors.blue,
-                    ),
-                    // Add register button press handler here
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyOptionsPage()),
-                      );
+                  OutlinedButton(
+                    onPressed: () {
+                      // Handle Google sign-in button press
                     },
+                    child: Text('Sign in with Google', style: TextStyle(color: Colors.white)),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 16.0),
+                  OutlinedButton(
+                    onPressed: () {
+                      // Handle Facebook sign-in button press
+                    },
+                    child: Text('Sign in with Facebook', style: TextStyle(color: Colors.white)),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+              SizedBox(height: 16.0),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'Don\'t have an account? ',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Register',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      // Add register button press handler here
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyOptionsPage()),
+                          );
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

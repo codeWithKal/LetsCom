@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/text_to_speech.dart';
 import 'package:lets_com/pages/pre_login/HI_page/HI_regiseration.dart';
 import 'package:lets_com/pages/pre_login/Voluteer_page/volunteer_registration.dart';
 import 'package:lets_com/pages/pre_login/login_page.dart';
@@ -23,3 +25,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
