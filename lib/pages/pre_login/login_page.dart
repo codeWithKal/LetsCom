@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
           image: DecorationImage(
             image: AssetImage('assets/Letscom.png'), // Replace with your image path
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken), // Add this line to darken the background
           ),
         ),
         child: Padding(
