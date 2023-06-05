@@ -17,7 +17,8 @@ class _LoginOrRegPageState extends State<LoginOrRegPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login or Registration'),
+        title: Text('Welcome To LetsCom'),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
