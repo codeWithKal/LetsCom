@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "503775379383",
+    "project_id": "letscom-df858",
+    "storage_bucket": "letscom-df858.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503775379383:android:4de6fe0db02b8e377c7232",
+        "android_client_info": {
+          "package_name": "com.example.lets_com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaxDSnGORG7SmkTkIJq68B9B5TIS0VEtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
