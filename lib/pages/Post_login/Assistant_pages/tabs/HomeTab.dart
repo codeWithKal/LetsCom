@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
 import 'package:lets_com/pages/Post_login/Assistant_pages/styles/styles.dart';
+import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/text_to_speech.dart';
 
 
 List<Map> Assistants = [
@@ -371,7 +373,22 @@ class CategoryIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: Color(MyColors.bg01),
-      onTap: () {},
+      onTap: () {
+        if (icon == Icons.record_voice_over)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => text_to_speech()),
+          );
+        }
+        else
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => speech_to_text()),
+            );
+          }
+      },
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Column(
