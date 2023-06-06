@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/styles.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/styles.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/screens/appointment.dart';
 import 'package:lets_com/pages/Services/sound_to_text.dart';
 import 'package:lets_com/pages/Services/text_to_speech.dart';
 
-import '../../Assistant_pages/screens/HI_detail.dart';
+import '../../HI_pages/screens/assistant_detail.dart';
 
 
-List<Map> HIs = [
+List<Map> Assistants = [
   {
     'img': 'assets/assistant02.jpeg',
-    'HIName': 'Mr. Abebe Kebede',
-    'HILocation': 'Adama'
+    'assistantName': 'Mr. Abebe Kebede',
+    'assistantLocation': 'Debrebirihan'
   },
   {
     'img': 'assets/assistant03.jpeg',
-    'HIName': 'Ms. Almaz Nadew',
-    'HILocation': 'Addis Ababa'
+    'assistantName': 'Ms. Almaz Nadew',
+    'assistantLocation': 'Wolayta'
   },
   {
     'img': 'assets/assistant02.jpeg',
-    'HIName': 'Mr. Kebede Abebe',
-    'HILocation': 'Jimma'
+    'assistantName': 'Mr. Kebede Abebe',
+    'assistantLocation': 'Fiche'
   },
   {
     'img': 'assets/assistant03.jpeg',
-    'HIName': 'Ms. Azeb Mesfen',
-    'HILocation': 'Hawassa'
+    'assistantName': 'Ms. Azeb Mesfen',
+    'assistantLocation': 'Arat Kilo'
   }
 ];
 
@@ -65,7 +66,7 @@ class HomeTab extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Today\'s Appointment',
+                  'Your today\'s appointment',
                   style: kTitleStyle,
                 ),
                 TextButton(
@@ -90,7 +91,7 @@ class HomeTab extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'People looking for help near your location',
+              'Top Assistants',
               style: TextStyle(
                 color: Color(MyColors.header01),
                 fontWeight: FontWeight.bold,
@@ -99,11 +100,11 @@ class HomeTab extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            for (var person in HIs)
-              TopHICard(
-                img: person['img'],
-                HIName: person['HIName'],
-                HILocation: person['HILocation'],
+            for (var Assistant in Assistants)
+              TopAssistantCard(
+                img: Assistant['img'],
+                AssistantName: Assistant['assistantName'],
+                assistantLocation: Assistant['assistantLocation'],
               )
           ],
         ),
@@ -112,15 +113,15 @@ class HomeTab extends StatelessWidget {
   }
 }
 
-class TopHICard extends StatelessWidget {
+class TopAssistantCard extends StatelessWidget {
   String img;
-  String HIName;
-  String HILocation;
+  String AssistantName;
+  String assistantLocation;
 
-  TopHICard({
+  TopAssistantCard({
     required this.img,
-    required this.HIName,
-    required this.HILocation,
+    required this.AssistantName,
+    required this.assistantLocation,
   });
 
   @override
@@ -150,7 +151,7 @@ class TopHICard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  HIName,
+                  AssistantName,
                   style: TextStyle(
                     color: Color(MyColors.header01),
                     fontWeight: FontWeight.w700,
@@ -160,7 +161,7 @@ class TopHICard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  HILocation,
+                  assistantLocation,
                   style: TextStyle(
                     color: Color(MyColors.grey02),
                     fontSize: 12,
@@ -174,7 +175,7 @@ class TopHICard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
-                      Icons.currency_exchange,
+                      Icons.star,
                       color: Color(MyColors.yellow02),
                       size: 18,
                     ),
@@ -182,7 +183,7 @@ class TopHICard extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      'ETB 400',
+                      '4.0 - 50 Reviews',
                       style: TextStyle(color: Color(MyColors.grey02)),
                     )
                   ],
@@ -240,7 +241,7 @@ class AppointmentCard extends StatelessWidget {
                               height: 2,
                             ),
                             Text(
-                              'Legetafo Legedadi',
+                              'Arbaminch',
                               style: TextStyle(color: Color(MyColors.text01)),
                             ),
                           ],
@@ -289,7 +290,7 @@ class AppointmentCard extends StatelessWidget {
 List<Map> categories = [
   {'icon': Icons.record_voice_over, 'text': 'TTS'},
   {'icon': Icons.keyboard_voice, 'text': 'STT'},
-  {'icon': Icons.sign_language, 'text': 'Sign to Text'},
+  {'icon': Icons.calendar_month, 'text': 'Scedule Now'},
   {'icon': Icons.mic_none, 'text': 'Record'},
 ];
 
@@ -386,11 +387,18 @@ class CategoryIcon extends StatelessWidget {
             MaterialPageRoute(builder: (context) => text_to_speech()),
           );
         }
+        else if(icon == Icons.keyboard_voice)
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => speech_to_text()),
+          );
+        }
         else
           {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => speech_to_text()),
+              MaterialPageRoute(builder: (context) => AppointmentSchedulerPage()),
             );
           }
       },
@@ -459,7 +467,7 @@ class SearchInput extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Search customers',
+                hintText: 'Search assistant ...',
                 hintStyle: TextStyle(
                     fontSize: 13,
                     color: Color(MyColors.purple01),

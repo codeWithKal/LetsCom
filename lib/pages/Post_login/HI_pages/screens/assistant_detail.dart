@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/styles.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/styles.dart';
 import "package:latlong2/latlong.dart" as latLng;
+import 'package:lets_com/pages/Post_login/HI_pages/screens/appointment.dart';
 
 class SliverAssistantDetail extends StatelessWidget {
   const SliverAssistantDetail({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class DetailBody extends StatelessWidget {
             height: 15,
           ),
           Text(
-            'Mr. Abebe Kebede is a specialist in internal medicine who specialzed blah blah.....',
+            'Mr. Abebe Kebede is a freelancer assistant who is willing to assist hearing impaired people .....',
             style: TextStyle(
               color: Color(MyColors.purple01),
               fontWeight: FontWeight.w500,
@@ -90,7 +91,12 @@ class DetailBody extends StatelessWidget {
               ),
             ),
             child: Text('Book Appointment'),
-            onPressed: () => {},
+            onPressed: () => {
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AppointmentSchedulerPage()),
+            )
+            },
           )
         ],
       ),
@@ -250,7 +256,7 @@ class DetailAssistantCard extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      'Heart Specialist',
+                      'Dessie',
                       style: TextStyle(
                         color: Color(MyColors.grey02),
                         fontWeight: FontWeight.w500,

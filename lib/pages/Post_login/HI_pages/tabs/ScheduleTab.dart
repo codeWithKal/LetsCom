@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/styles.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
+
+import '../styles/styles.dart';
 
 class ScheduleTab extends StatefulWidget {
   const ScheduleTab({Key? key}) : super(key: key);
@@ -14,49 +15,48 @@ enum FilterStatus { Upcoming, Complete, Cancel }
 List<Map> schedules = [
   {
     'img': 'assets/assistant01.jpeg',
-    'HIName': 'Ms. Selam Wagaye',
-    'HILocation': 'Mekele',
+    'assistantName': 'Ms. Selam Wagaye',
+    'assistantLocation': 'Debre-Markos',
     'reservedDate': 'Monday, Aug 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Upcoming
   },
   {
-    'img': 'assets/assistant02.png',
-    'HIName': 'Mr. Kebede Abebe',
-    'HILocation': 'Gondor',
+    'img': 'assets/person.png',
+    'assistantName': 'Mr. Kebede Abebe',
+    'assistantLocation': 'Bahirdar',
     'reservedDate': 'Monday, Sep 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Upcoming
   },
   {
     'img': 'assets/assistant03.jpeg',
-    'HIName': 'Ms. Azeb Mesfen',
-    'HILocation': 'Adama',
-    'Fee':'ETB 300',
+    'assistantName': 'Ms. Azeb Mesfen',
+    'assistantLocation': 'Kebridehar',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Upcoming
   },
   {
     'img': 'assets/assistant04.jpeg',
-    'HIName': 'Mr. Ayana Demamu',
-    'HILocation': 'Jima',
+    'assistantName': 'Mr. Ayana Demamu',
+    'assistantLocation': 'Benishangulgumuz',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Complete
   },
   {
     'img': 'assets/assistant05.jpeg',
-    'HIName': 'Ms. Almaz Nadew',
-    'HILocation': 'Pawi',
+    'assistantName': 'Ms. Almaz Nadew',
+    'assistantLocation': 'Hosaina',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Cancel
   },
   {
     'img': 'assets/assistant05.jpeg',
-    'HIName': 'Mr. Abebe Kebede',
-    'HILocation': 'Aleltu',
+    'assistantName': 'Mr. Abebe Kebede',
+    'assistantLocation': 'Sheno',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
     'status': FilterStatus.Cancel
@@ -182,7 +182,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    _schedule['HIName'],
+                                    _schedule['assistantName'],
                                     style: TextStyle(
                                       color: Color(MyColors.header01),
                                       fontWeight: FontWeight.w700,
@@ -192,7 +192,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
                                     height: 5,
                                   ),
                                   Text(
-                                    _schedule['HILocation'],
+                                    _schedule['assistantLocation'],
                                     style: TextStyle(
                                       color: Color(MyColors.grey02),
                                       fontSize: 12,

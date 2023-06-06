@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/tabs/HomeTab.dart';
-import 'package:lets_com/pages/Post_login/Assistant_pages/tabs/ScheduleTab.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/tabs/HomeTab.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/tabs/ScheduleTab.dart';
 
-
-class AHome extends StatefulWidget {
-  const AHome({Key? key}) : super(key: key);
+class HHome extends StatefulWidget {
+  const HHome({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -16,7 +15,7 @@ List<Map> navigationBarItems = [
   {'icon': Icons.calendar_today, 'index': 1},
 ];
 
-class _HomeState extends State<AHome> {
+class _HomeState extends State<HHome> {
   int _selectedIndex = 0;
   void goToSchedule() {
     setState(() {
