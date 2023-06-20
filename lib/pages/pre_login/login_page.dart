@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:lets_com/pages/Post_login/Assistant_pages/screens/home.dart';
+import 'package:lets_com/pages/Post_login/HI_pages/screens/home.dart';
 import 'package:lets_com/pages/pre_login/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => HHome()),
                   );
                 },
                 child: Text('Login', style: TextStyle(color: Colors.white)),

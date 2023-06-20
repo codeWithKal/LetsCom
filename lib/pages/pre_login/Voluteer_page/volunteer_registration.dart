@@ -8,6 +8,7 @@ class VRegistrationPage extends StatefulWidget {
 class _VRegistrationPageState extends State<VRegistrationPage> {
   String _selectedPreference = '';
   String _selectedFee = '';
+  String _selectedHourlyRate = '';
   bool _showHourlyRateSection = false; // Track whether to show the hourly rate section or not
 
   List<String> _preferences = ['Individual', 'Group', 'Both'];
@@ -26,6 +27,8 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
   TextEditingController _countryController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
   TextEditingController _streetNumberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _retypePasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -59,12 +62,20 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
             ),
             SizedBox(height: 16.0),
             _buildFormGroup(
+              'Credential',
+              [
+                _buildPasswordField(_passwordController, 'Password'),
+                _buildPasswordField(_retypePasswordController, 'Retype Password'),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            _buildFormGroup(
               'Preference',
               _buildRadioButtons(_preferences, (value) {
                 setState(() {
                   _selectedPreference = value;
                 });
-              }),
+              }, 'preference'),
             ),
             SizedBox(height: 16.0),
             _buildFormGroup(
@@ -74,15 +85,17 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
                   _selectedFee = value;
                   _showHourlyRateSection = value == "I'm freelancing";
                 });
-              }),
+              }, 'fee'),
             ),
             if (_showHourlyRateSection) ...[
               SizedBox(height: 16.0),
               _buildFormGroup(
                 'Hourly Rate',
                 _buildRadioButtons(_hourlyRates, (value) {
-                  // Do something with the selected hourly rate
-                }),
+                  setState(() {
+                    _selectedHourlyRate = value;
+                  });
+                }, 'hourly_rate'),
               ),
             ],
             SizedBox(height: 16.0),
@@ -133,13 +146,24 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
     );
   }
 
-  List<Widget> _buildRadioButtons(List<String> options, void Function(String) onChanged) {
+  Widget _buildPasswordField(TextEditingController controller, String label) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+      ),
+      obscureText: true,
+    );
+  }
+
+  List<Widget> _buildRadioButtons(
+      List<String> options, void Function(String) onChanged, String groupValue) {
     return options.map((option) {
       return Row(
         children: [
           Radio<String>(
             value: option,
-            groupValue: option == 'Individual' ? _selectedPreference : _selectedFee,
+            groupValue: _getGroupValue(groupValue),
             onChanged: (String? value) {
               onChanged(value!);
             },
@@ -148,6 +172,17 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
         ],
       );
     }).toList();
+  }
+
+  String _getGroupValue(String groupValue) {
+    if (groupValue == 'preference') {
+      return _selectedPreference;
+    } else if (groupValue == 'fee') {
+      return _selectedFee;
+    } else if (groupValue == 'hourly_rate') {
+      return _selectedHourlyRate;
+    }
+    return '';
   }
 
   @override
@@ -160,6 +195,8 @@ class _VRegistrationPageState extends State<VRegistrationPage> {
     _countryController.dispose();
     _stateController.dispose();
     _streetNumberController.dispose();
+    _passwordController.dispose();
+    _retypePasswordController.dispose();
     super.dispose();
   }
 }

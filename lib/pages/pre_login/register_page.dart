@@ -18,7 +18,7 @@ class _MyOptionsPageState extends State<MyOptionsPage> {
       title: 'Registration',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: Scaffold(
-        appBar: AppBar(title: Text('Registration')),
+        // appBar: AppBar(title: Text('Registration')),
         body: Stack(
           children: [
             Container(

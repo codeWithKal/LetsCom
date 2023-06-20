@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Registration App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HRegistrationPage(),
+    );
+  }
+}
 
 class HRegistrationPage extends StatefulWidget {
-
   @override
   _HRegistrationPageState createState() => _HRegistrationPageState();
 }
@@ -15,6 +33,11 @@ class _HRegistrationPageState extends State<HRegistrationPage> {
   TextEditingController _countryController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
   TextEditingController _streetNumberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _retypePasswordController = TextEditingController();
+
+  final CollectionReference _registrationRef =
+  FirebaseFirestore.instance.collection('registrations');
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +70,36 @@ class _HRegistrationPageState extends State<HRegistrationPage> {
               ],
             ),
             SizedBox(height: 16.0),
+            _buildCredentialsFormGroup(),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Perform registration logic here
+                // Create a registration object from the form data
+                Registration registration = Registration(
+                  firstName: _firstNameController.text,
+                  lastName: _lastNameController.text,
+                  phoneNumber: _phoneNumberController.text,
+                  email: _emailController.text,
+                  nationality: _nationalityController.text,
+                  country: _countryController.text,
+                  state: _stateController.text,
+                  streetNumber: _streetNumberController.text,
+                );
+
+                // Store the registration data in Firebase Firestore
+                _registrationRef.add(registration.toJson());
+
+                // Reset the form
+                _firstNameController.clear();
+                _lastNameController.clear();
+                _phoneNumberController.clear();
+                _emailController.clear();
+                _nationalityController.clear();
+                _countryController.clear();
+                _stateController.clear();
+                _streetNumberController.clear();
+                _passwordController.clear();
+                _retypePasswordController.clear();
               },
               child: Text('Register'),
             ),
@@ -85,9 +135,39 @@ class _HRegistrationPageState extends State<HRegistrationPage> {
     );
   }
 
+  Widget _buildCredentialsFormGroup() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Credentials',
+          style: TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Card(
+          elevation: 2.0,
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildTextField(_passwordController, 'Password'),
+                _buildTextField(_retypePasswordController, 'Retype Password'),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
+      obscureText: label.contains('Password'),
       decoration: InputDecoration(
         labelText: label,
       ),
@@ -104,6 +184,43 @@ class _HRegistrationPageState extends State<HRegistrationPage> {
     _countryController.dispose();
     _stateController.dispose();
     _streetNumberController.dispose();
+    _passwordController.dispose();
+    _retypePasswordController.dispose();
     super.dispose();
+  }
+}
+
+class Registration {
+  String firstName;
+  String lastName;
+  String phoneNumber;
+  String email;
+  String nationality;
+  String country;
+  String state;
+  String streetNumber;
+
+  Registration({
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.email,
+    required this.nationality,
+    required this.country,
+    required this.state,
+    required this.streetNumber,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'nationality': nationality,
+      'country': country,
+      'state': state,
+      'streetNumber': streetNumber,
+    };
   }
 }
