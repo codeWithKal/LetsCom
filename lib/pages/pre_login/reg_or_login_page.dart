@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/speech_to_text.dart';
 import 'package:lets_com/pages/pre_login/register_page.dart';
 
 import '../Services/text_to_speech.dart';

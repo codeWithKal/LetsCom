@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lets_com/pages/Post_login/Assistant_pages/styles/colors.dart';
 import 'package:lets_com/pages/Post_login/Assistant_pages/styles/styles.dart';
-import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/speech_to_text.dart';
 import 'package:lets_com/pages/Services/text_to_speech.dart';
 
 import '../../Assistant_pages/screens/HI_detail.dart';

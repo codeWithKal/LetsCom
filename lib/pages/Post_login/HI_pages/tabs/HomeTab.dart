@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
 import 'package:lets_com/pages/Post_login/HI_pages/styles/styles.dart';
 import 'package:lets_com/pages/Post_login/HI_pages/screens/appointment.dart';
-import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/speech_to_text.dart';
 import 'package:lets_com/pages/Services/text_to_speech.dart';
 
 import '../../HI_pages/screens/assistant_detail.dart';

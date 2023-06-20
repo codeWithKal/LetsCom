@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class VRegistrationPage extends StatefulWidget {
+class Assistant extends StatefulWidget {
   @override
-  _VRegistrationPageState createState() => _VRegistrationPageState();
+  _AssistantState createState() => _AssistantState();
 }
 
-class _VRegistrationPageState extends State<VRegistrationPage> {
+class _AssistantState extends State<Assistant> {
   String _selectedPreference = '';
   String _selectedFee = '';
   String _selectedHourlyRate = '';

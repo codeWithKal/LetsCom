@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:lets_com/pages/Services/sound_to_text.dart';
+import 'package:lets_com/pages/Services/speech_to_text.dart';
 
 
 

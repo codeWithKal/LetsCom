@@ -14,17 +14,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Registration App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: HRegistrationPage(),
+      home: HearingImpaired(),
     );
   }
 }
 
-class HRegistrationPage extends StatefulWidget {
+class HearingImpaired extends StatefulWidget {
   @override
-  _HRegistrationPageState createState() => _HRegistrationPageState();
+  _HearingImpairedState createState() => _HearingImpairedState();
 }
 
-class _HRegistrationPageState extends State<HRegistrationPage> {
+class _HearingImpairedState extends State<HearingImpaired> {
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
