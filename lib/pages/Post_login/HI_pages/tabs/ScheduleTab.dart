@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lets_com/pages/Post_login/HI_pages/styles/colors.dart';
-
 import '../styles/styles.dart';
 
 class ScheduleTab extends StatefulWidget {
@@ -10,7 +9,7 @@ class ScheduleTab extends StatefulWidget {
   State<ScheduleTab> createState() => _ScheduleTabState();
 }
 
-enum FilterStatus { Upcoming, Complete, Cancel }
+enum FilterStatus { Pending, Upcoming, Completed }
 
 List<Map> schedules = [
   {
@@ -19,7 +18,7 @@ List<Map> schedules = [
     'assistantLocation': 'Debre-Markos',
     'reservedDate': 'Monday, Aug 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.Pending,
   },
   {
     'img': 'assets/person.png',
@@ -27,7 +26,7 @@ List<Map> schedules = [
     'assistantLocation': 'Bahirdar',
     'reservedDate': 'Monday, Sep 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.Pending,
   },
   {
     'img': 'assets/assistant03.jpeg',
@@ -35,7 +34,7 @@ List<Map> schedules = [
     'assistantLocation': 'Kebridehar',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.Pending,
   },
   {
     'img': 'assets/assistant04.jpeg',
@@ -43,7 +42,7 @@ List<Map> schedules = [
     'assistantLocation': 'Benishangulgumuz',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Complete
+    'status': FilterStatus.Upcoming,
   },
   {
     'img': 'assets/assistant05.jpeg',
@@ -51,7 +50,7 @@ List<Map> schedules = [
     'assistantLocation': 'Hosaina',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Cancel
+    'status': FilterStatus.Completed,
   },
   {
     'img': 'assets/assistant05.jpeg',
@@ -59,12 +58,12 @@ List<Map> schedules = [
     'assistantLocation': 'Sheno',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Cancel
+    'status': FilterStatus.Completed,
   },
 ];
 
 class _ScheduleTabState extends State<ScheduleTab> {
-  FilterStatus status = FilterStatus.Upcoming;
+  FilterStatus status = FilterStatus.Pending;
   Alignment _alignment = Alignment.centerLeft;
 
   @override
@@ -104,16 +103,12 @@ class _ScheduleTabState extends State<ScheduleTab> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (filterStatus == FilterStatus.Upcoming) {
-                                  status = FilterStatus.Upcoming;
+                                status = filterStatus;
+                                if (status == FilterStatus.Pending) {
                                   _alignment = Alignment.centerLeft;
-                                } else if (filterStatus ==
-                                    FilterStatus.Complete) {
-                                  status = FilterStatus.Complete;
+                                } else if (status == FilterStatus.Upcoming) {
                                   _alignment = Alignment.center;
-                                } else if (filterStatus ==
-                                    FilterStatus.Cancel) {
-                                  status = FilterStatus.Cancel;
+                                } else if (status == FilterStatus.Completed) {
                                   _alignment = Alignment.centerRight;
                                 }
                               });
@@ -160,7 +155,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
                 itemCount: filteredSchedules.length,
                 itemBuilder: (context, index) {
                   var _schedule = filteredSchedules[index];
-                  bool isLastElement = filteredSchedules.length + 1 == index;
+                  bool isLastElement = filteredSchedules.length - 1 == index;
                   return Card(
                     margin: !isLastElement
                         ? EdgeInsets.only(bottom: 20)
@@ -210,40 +205,55 @@ class _ScheduleTabState extends State<ScheduleTab> {
                           SizedBox(
                             height: 15,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  child: Text('Cancel',
-                                    style: TextStyle(
-                                      color: Color(MyColors.primary), // Replace Colors.red with your desired color
+                          if (status != FilterStatus.Completed &&
+                              _schedule['status'] == FilterStatus.Upcoming)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Text('Reschedule'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(MyColors.primary),
                                     ),
+                                    onPressed: () {},
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  child: Text('Reschedule'),
-                                   style: ElevatedButton.styleFrom(
-                                    primary: Color(MyColors.primary), // Replace Colors.blue with your desired color
-                                   ),
-                                  onPressed: () => {},
+                              ],
+                            )
+                          else if (status != FilterStatus.Completed &&
+                              _schedule['status'] != FilterStatus.Upcoming)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Text('Reschedule'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(MyColors.primary),
+                                    ),
+                                    onPressed: () {},
+                                  ),
                                 ),
-                              )
-                            ],
-                          )
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Text('Cancel'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(MyColors.primary),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -252,62 +262,61 @@ class _ScheduleTabState extends State<ScheduleTab> {
 }
 
 class DateTimeCard extends StatelessWidget {
-  const DateTimeCard({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Color(MyColors.bg03),
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(10),
       ),
-      width: double.infinity,
-      padding: EdgeInsets.all(20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                Icons.calendar_today,
-                color: Color(MyColors.primary),
-                size: 15,
-              ),
-              SizedBox(
-                width: 5,
+              Text(
+                'Reserved Date',
+                style: TextStyle(
+                  color: Color(MyColors.grey02),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
-                'Mon, July 29',
+                'Reserved Time',
                 style: TextStyle(
+                  color: Color(MyColors.grey02),
                   fontSize: 12,
-                  color: Color(MyColors.primary),
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                Icons.access_alarm,
-                color: Color(MyColors.primary),
-                size: 17,
-              ),
-              SizedBox(
-                width: 5,
+              Text(
+                'Monday, Aug 29',
+                style: TextStyle(
+                  color: Color(MyColors.header01),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               Text(
-                '11:00 ~ 12:10',
+                '11:00 - 12:00',
                 style: TextStyle(
-                  color: Color(MyColors.primary),
-                  fontWeight: FontWeight.bold,
+                  color: Color(MyColors.header01),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

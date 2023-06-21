@@ -57,7 +57,7 @@ class HomeTab extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            CategoryIcons(),
+            // CategoryIcons(),
             SizedBox(
               height: 20,
             ),

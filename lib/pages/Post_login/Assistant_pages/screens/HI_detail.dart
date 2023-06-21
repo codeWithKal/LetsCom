@@ -14,7 +14,7 @@ class SliverAssistantDetail extends StatelessWidget {
         slivers: [
           SliverAppBar(
             pinned: true,
-            title: Text('Detail Information'),
+            title: Text('Customer Details'),
             backgroundColor: Color(MyColors.primary),
             expandedHeight: 200,
             flexibleSpace: FlexibleSpaceBar(
@@ -83,15 +83,15 @@ class DetailBody extends StatelessWidget {
           SizedBox(
             height: 25,
           ),
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                Color(MyColors.primary),
-              ),
-            ),
-            child: Text('I\'ll help'),
-            onPressed: () => {},
-          )
+          // ElevatedButton(
+          //   style: ButtonStyle(
+          //     backgroundColor: MaterialStateProperty.all<Color>(
+          //       Color(MyColors.primary),
+          //     ),
+          //   ),
+          //   child: Text('I\'ll help'),
+          //   onPressed: () => {},
+          // )
         ],
       ),
     );

@@ -9,7 +9,7 @@ class ScheduleTab extends StatefulWidget {
   State<ScheduleTab> createState() => _ScheduleTabState();
 }
 
-enum FilterStatus { Upcoming, Complete, Cancel }
+enum FilterStatus { New, Accepted, Rejected }
 
 List<Map> schedules = [
   {
@@ -18,7 +18,7 @@ List<Map> schedules = [
     'HILocation': 'Mekele',
     'reservedDate': 'Monday, Aug 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.New
   },
   {
     'img': 'assets/assistant02.png',
@@ -26,7 +26,7 @@ List<Map> schedules = [
     'HILocation': 'Gondor',
     'reservedDate': 'Monday, Sep 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.New
   },
   {
     'img': 'assets/assistant03.jpeg',
@@ -35,7 +35,7 @@ List<Map> schedules = [
     'Fee':'ETB 300',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Upcoming
+    'status': FilterStatus.New
   },
   {
     'img': 'assets/assistant04.jpeg',
@@ -43,7 +43,7 @@ List<Map> schedules = [
     'HILocation': 'Jima',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Complete
+    'status': FilterStatus.Accepted
   },
   {
     'img': 'assets/assistant05.jpeg',
@@ -51,7 +51,7 @@ List<Map> schedules = [
     'HILocation': 'Pawi',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Cancel
+    'status': FilterStatus.Rejected
   },
   {
     'img': 'assets/assistant05.jpeg',
@@ -59,12 +59,12 @@ List<Map> schedules = [
     'HILocation': 'Aleltu',
     'reservedDate': 'Monday, Jul 29',
     'reservedTime': '11:00 - 12:00',
-    'status': FilterStatus.Cancel
+    'status': FilterStatus.Rejected
   },
 ];
 
 class _ScheduleTabState extends State<ScheduleTab> {
-  FilterStatus status = FilterStatus.Upcoming;
+  FilterStatus status = FilterStatus.New;
   Alignment _alignment = Alignment.centerLeft;
 
   @override
@@ -80,7 +80,7 @@ class _ScheduleTabState extends State<ScheduleTab> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Schedule',
+              'Schedules',
               textAlign: TextAlign.center,
               style: kTitleStyle,
             ),
@@ -104,16 +104,16 @@ class _ScheduleTabState extends State<ScheduleTab> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
-                                if (filterStatus == FilterStatus.Upcoming) {
-                                  status = FilterStatus.Upcoming;
+                                if (filterStatus == FilterStatus.New) {
+                                  status = FilterStatus.New;
                                   _alignment = Alignment.centerLeft;
                                 } else if (filterStatus ==
-                                    FilterStatus.Complete) {
-                                  status = FilterStatus.Complete;
+                                    FilterStatus.Accepted) {
+                                  status = FilterStatus.Accepted;
                                   _alignment = Alignment.center;
                                 } else if (filterStatus ==
-                                    FilterStatus.Cancel) {
-                                  status = FilterStatus.Cancel;
+                                    FilterStatus.Rejected) {
+                                  status = FilterStatus.Rejected;
                                   _alignment = Alignment.centerRight;
                                 }
                               });
@@ -210,33 +210,35 @@ class _ScheduleTabState extends State<ScheduleTab> {
                           SizedBox(
                             height: 15,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  child: Text('Cancel',
-                                    style: TextStyle(
-                                      color: Color(MyColors.primary), // Replace Colors.red with your desired color
+                          if (_schedule['status'] == FilterStatus.New)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton(
+                                    child: Text(
+                                      'Reject',
+                                      style: TextStyle(
+                                        color: Color(MyColors.primary),
+                                      ),
                                     ),
+                                    onPressed: () {},
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: ElevatedButton(
-                                  child: Text('Reschedule'),
-                                   style: ElevatedButton.styleFrom(
-                                    primary: Color(MyColors.primary), // Replace Colors.blue with your desired color
-                                   ),
-                                  onPressed: () => {},
+                                SizedBox(
+                                  width: 20,
                                 ),
-                              )
-                            ],
-                          )
+                                Expanded(
+                                  child: ElevatedButton(
+                                    child: Text('Accept'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(MyColors.primary),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                )
+                              ],
+                            )
                         ],
                       ),
                     ),
