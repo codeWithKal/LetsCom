@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:country_picker/country_picker.dart';
+
+import '../successfull_login.dart';
 
 class Assistant extends StatefulWidget {
   @override
@@ -23,12 +27,12 @@ class _AssistantState extends State<Assistant> {
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _nationalityController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
   TextEditingController _stateController = TextEditingController();
-  TextEditingController _streetNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _retypePasswordController = TextEditingController();
+
+  bool _isSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,28 +48,26 @@ class _AssistantState extends State<Assistant> {
             _buildFormGroup(
               'Personal Information',
               [
-                _buildTextField(_firstNameController, 'First Name'),
-                _buildTextField(_lastNameController, 'Last Name'),
-                _buildTextField(_phoneNumberController, 'Phone Number'),
-                _buildTextField(_emailController, 'Email'),
+                _buildTextField(_firstNameController, 'First Name', 'Enter a valid first name', validateFirstName),
+                _buildTextField(_lastNameController, 'Last Name', 'Enter a valid last name', validateLastName),
+                _buildTextField(_phoneNumberController, 'Phone Number', 'Enter a valid phone number', validatePhoneNumber),
+                _buildTextField(_emailController, 'Email', 'Enter a valid email', validateEmail),
               ],
             ),
             SizedBox(height: 16.0),
             _buildFormGroup(
               'Address',
               [
-                _buildTextField(_nationalityController, 'Nationality'),
-                _buildTextField(_countryController, 'Country'),
-                _buildTextField(_stateController, 'State'),
-                _buildTextField(_streetNumberController, 'Street Number'),
+                _buildCountryPickerField(_countryController, 'Country'),
+                _buildTextField(_stateController, 'City', 'Enter a valid city', validateCity),
               ],
             ),
             SizedBox(height: 16.0),
             _buildFormGroup(
               'Credential',
               [
-                _buildPasswordField(_passwordController, 'Password'),
-                _buildPasswordField(_retypePasswordController, 'Retype Password'),
+                _buildPasswordField(_passwordController, 'Password', 'Enter a valid password', validatePassword),
+                _buildPasswordField(_retypePasswordController, 'Retype Password', 'Passwords do not match', validateRetypePassword),
               ],
             ),
             SizedBox(height: 16.0),
@@ -100,9 +102,7 @@ class _AssistantState extends State<Assistant> {
             ],
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                // Perform registration logic here
-              },
+              onPressed: _validateFields,
               child: Text('Register'),
             ),
           ],
@@ -137,22 +137,51 @@ class _AssistantState extends State<Assistant> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget _buildTextField(
+      TextEditingController controller, String label, String errorText, Function(String) validator) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        errorText: _isSubmitted && !validator(controller.text) ? errorText : null,
       ),
     );
   }
 
-  Widget _buildPasswordField(TextEditingController controller, String label) {
+  Widget _buildPasswordField(
+      TextEditingController controller, String label, String errorText, Function(String) validator) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        errorText: _isSubmitted && !validator(controller.text) ? errorText : null,
       ),
       obscureText: true,
+    );
+  }
+
+  Widget _buildCountryPickerField(
+      TextEditingController controller, String label) {
+    return GestureDetector(
+      onTap: () {
+        showCountryPicker(
+          context: context,
+          showPhoneCode: false,
+          onSelect: (Country country) {
+            setState(() {
+              controller.text = country.name;
+            });
+          },
+        );
+      },
+      child: AbsorbPointer(
+        child: TextFormField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: label,
+          ),
+        ),
+      ),
     );
   }
 
@@ -185,18 +214,58 @@ class _AssistantState extends State<Assistant> {
     return '';
   }
 
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneNumberController.dispose();
-    _emailController.dispose();
-    _nationalityController.dispose();
-    _countryController.dispose();
-    _stateController.dispose();
-    _streetNumberController.dispose();
-    _passwordController.dispose();
-    _retypePasswordController.dispose();
-    super.dispose();
+  void _validateFields() {
+    setState(() {
+      _isSubmitted = true;
+    });
+
+    if (!_isFormValid()) {
+      return; // Return if any of the fields are invalid
+    }
+
+    // Store the user data in Firestore or perform any other necessary actions
+    // Here, you can navigate to the next screen or show a success message
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationSuccessPage()),
+    );
+  }
+
+  bool _isFormValid() {
+    return validateFirstName(_firstNameController.text) &&
+        validateLastName(_lastNameController.text) &&
+        validatePhoneNumber(_phoneNumberController.text) &&
+        validateEmail(_emailController.text) &&
+        validateCity(_stateController.text) &&
+        validatePassword(_passwordController.text) &&
+        validateRetypePassword(_retypePasswordController.text);
+  }
+
+  bool validateFirstName(String firstName) {
+    return firstName.isNotEmpty;
+  }
+
+  bool validateLastName(String lastName) {
+    return lastName.isNotEmpty;
+  }
+
+  bool validatePhoneNumber(String phoneNumber) {
+    return phoneNumber.isNotEmpty;
+  }
+
+  bool validateEmail(String email) {
+    return email.isNotEmpty && email.contains('@');
+  }
+
+  bool validateCity(String city) {
+    return city.isNotEmpty;
+  }
+
+  bool validatePassword(String password) {
+    return password.isNotEmpty && password.length >= 6;
+  }
+
+  bool validateRetypePassword(String retypePassword) {
+    return retypePassword.isNotEmpty && retypePassword == _passwordController.text;
   }
 }

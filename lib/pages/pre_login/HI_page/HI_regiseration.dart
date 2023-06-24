@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lets_com/pages/pre_login/successfull_login.dart';
+import 'package:country_picker/country_picker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,15 +31,16 @@ class _HearingImpairedState extends State<HearingImpaired> {
   TextEditingController _lastNameController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _nationalityController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
-  TextEditingController _stateController = TextEditingController();
-  TextEditingController _streetNumberController = TextEditingController();
+  TextEditingController _regionController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _retypePasswordController = TextEditingController();
 
   final CollectionReference _registrationRef =
-  FirebaseFirestore.instance.collection('registrations');
+  FirebaseFirestore.instance.collection('Hearing Impaired People');
+
+  bool _isSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +66,9 @@ class _HearingImpairedState extends State<HearingImpaired> {
             _buildFormGroup(
               'Address',
               [
-                _buildTextField(_nationalityController, 'Nationality'),
                 _buildTextField(_countryController, 'Country'),
-                _buildTextField(_stateController, 'State'),
-                _buildTextField(_streetNumberController, 'Street Number'),
+                _buildTextField(_regionController, 'Region'),
+                _buildTextField(_cityController, 'City'),
               ],
             ),
             SizedBox(height: 16.0),
@@ -74,32 +76,31 @@ class _HearingImpairedState extends State<HearingImpaired> {
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Create a registration object from the form data
-                Registration registration = Registration(
-                  firstName: _firstNameController.text,
-                  lastName: _lastNameController.text,
-                  phoneNumber: _phoneNumberController.text,
-                  email: _emailController.text,
-                  nationality: _nationalityController.text,
-                  country: _countryController.text,
-                  state: _stateController.text,
-                  streetNumber: _streetNumberController.text,
-                );
+                setState(() {
+                  _isSubmitted = true;
+                });
 
-                // Store the registration data in Firebase Firestore
-                _registrationRef.add(registration.toJson());
+                if (_validateForm()) {
+                  // Create a registration object from the form data
+                  Registration registration = Registration(
+                    firstName: _firstNameController.text,
+                    lastName: _lastNameController.text,
+                    phoneNumber: _phoneNumberController.text,
+                    email: _emailController.text,
+                    country: _countryController.text,
+                    region: _regionController.text,
+                    city: _cityController.text,
+                  );
 
-                // Reset the form
-                _firstNameController.clear();
-                _lastNameController.clear();
-                _phoneNumberController.clear();
-                _emailController.clear();
-                _nationalityController.clear();
-                _countryController.clear();
-                _stateController.clear();
-                _streetNumberController.clear();
-                _passwordController.clear();
-                _retypePasswordController.clear();
+                  // Store the registration data in Firebase Firestore
+                  _registrationRef.add(registration.toJson());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RegistrationSuccessPage(),
+                    ),
+                  );
+                }
               },
               child: Text('Register'),
             ),
@@ -155,7 +156,19 @@ class _HearingImpairedState extends State<HearingImpaired> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _buildTextField(_passwordController, 'Password'),
+                SizedBox(height: 8.0),
                 _buildTextField(_retypePasswordController, 'Retype Password'),
+                _isSubmitted &&
+                    _validateField(
+                        _retypePasswordController.text, 'Retype Password') &&
+                    _passwordController.text.isNotEmpty
+                    ? Text(
+                  'Passwords do not match',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                )
+                    : Container(),
               ],
             ),
           ),
@@ -167,48 +180,103 @@ class _HearingImpairedState extends State<HearingImpaired> {
   Widget _buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
+      readOnly: label == 'Country' || label == 'Region',
+      onTap: () {
+        if (label == 'Country') {
+          showCountryPicker(
+            context: context,
+            showPhoneCode: false,
+            onSelect: (country) {
+              setState(() {
+                _countryController.text = country.name;
+              });
+            },
+          );
+        }
+      },
       obscureText: label.contains('Password'),
       decoration: InputDecoration(
         labelText: label,
+        errorText: _isSubmitted && _validateField(controller.text, label)
+            ? _getErrorText(controller.text, label)
+            : null,
       ),
     );
   }
 
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _phoneNumberController.dispose();
-    _emailController.dispose();
-    _nationalityController.dispose();
-    _countryController.dispose();
-    _stateController.dispose();
-    _streetNumberController.dispose();
-    _passwordController.dispose();
-    _retypePasswordController.dispose();
-    super.dispose();
+  bool _validateField(String value, String label) {
+    if (label == 'First Name' || label == 'Last Name') {
+      return !RegExp(r'^[a-zA-Z]+$').hasMatch(value);
+    } else if (label == 'Phone Number') {
+      return !RegExp(r'^[0-9]{10}$').hasMatch(value);
+    } else if (label == 'Email') {
+      return !RegExp(
+          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+          .hasMatch(value);
+    } else if (label == 'Password' || label == 'Retype Password') {
+      return !RegExp(
+          r'^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])')
+          .hasMatch(value);
+    }
+    return false;
+  }
+
+  String _getErrorText(String value, String label) {
+    if (label == 'First Name' || label == 'Last Name') {
+      return 'Please use characters only';
+    } else if (label == 'Phone Number') {
+      return 'Please enter a valid phone number';
+    } else if (label == 'Email') {
+      return 'Please enter a valid email address';
+    } else if (label == 'Password') {
+      if (!_validateField(value, label)) {
+        return 'Please enter a valid password with at least one letter, one number, and one special character';
+      }
+    }
+    return '';
+  }
+
+  bool _validateForm() {
+    bool isValid = true;
+    List<Map<String, dynamic>> formFields = [
+      {'value': _firstNameController.text, 'label': 'First Name'},
+      {'value': _lastNameController.text, 'label': 'Last Name'},
+      {'value': _phoneNumberController.text, 'label': 'Phone Number'},
+      {'value': _emailController.text, 'label': 'Email'},
+      {'value': _countryController.text, 'label': 'Country'},
+      {'value': _regionController.text, 'label': 'Region'},
+      {'value': _cityController.text, 'label': 'City'},
+      {'value': _passwordController.text, 'label': 'Password'},
+      {'value': _retypePasswordController.text, 'label': 'Retype Password'},
+    ];
+
+    for (Map<String, dynamic> field in formFields) {
+      if (_validateField(field['value'], field['label'])) {
+        isValid = false;
+      }
+    }
+
+    return isValid;
   }
 }
 
 class Registration {
-  String firstName;
-  String lastName;
-  String phoneNumber;
-  String email;
-  String nationality;
-  String country;
-  String state;
-  String streetNumber;
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+  final String email;
+  final String country;
+  final String region;
+  final String city;
 
   Registration({
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
     required this.email,
-    required this.nationality,
     required this.country,
-    required this.state,
-    required this.streetNumber,
+    required this.region,
+    required this.city,
   });
 
   Map<String, dynamic> toJson() {
@@ -217,10 +285,9 @@ class Registration {
       'lastName': lastName,
       'phoneNumber': phoneNumber,
       'email': email,
-      'nationality': nationality,
       'country': country,
-      'state': state,
-      'streetNumber': streetNumber,
+      'region': region,
+      'city': city,
     };
   }
 }

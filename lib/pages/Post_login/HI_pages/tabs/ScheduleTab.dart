@@ -212,13 +212,14 @@ class _ScheduleTabState extends State<ScheduleTab> {
                               children: [
                                 Expanded(
                                   child: ElevatedButton(
-                                    child: Text('Reschedule'),
+                                    child: Text('Completed'),
                                     style: ElevatedButton.styleFrom(
                                       primary: Color(MyColors.primary),
                                     ),
                                     onPressed: () {},
                                   ),
                                 ),
+
                               ],
                             )
                           else if (status != FilterStatus.Completed &&
