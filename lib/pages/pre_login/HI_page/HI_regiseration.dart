@@ -32,7 +32,6 @@ class _HearingImpairedState extends State<HearingImpaired> {
   TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
-  TextEditingController _regionController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _retypePasswordController = TextEditingController();
@@ -67,7 +66,6 @@ class _HearingImpairedState extends State<HearingImpaired> {
               'Address',
               [
                 _buildTextField(_countryController, 'Country'),
-                _buildTextField(_regionController, 'Region'),
                 _buildTextField(_cityController, 'City'),
               ],
             ),
@@ -88,7 +86,6 @@ class _HearingImpairedState extends State<HearingImpaired> {
                     phoneNumber: _phoneNumberController.text,
                     email: _emailController.text,
                     country: _countryController.text,
-                    region: _regionController.text,
                     city: _cityController.text,
                   );
 
@@ -169,6 +166,13 @@ class _HearingImpairedState extends State<HearingImpaired> {
                   ),
                 )
                     : Container(),
+                SizedBox(height: 8.0),
+                Text(
+                  'Passwords must contain at least one character, one number, and one special symbol',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
           ),
@@ -177,10 +181,11 @@ class _HearingImpairedState extends State<HearingImpaired> {
     );
   }
 
+
   Widget _buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
-      readOnly: label == 'Country' || label == 'Region',
+      readOnly: label == 'Country',
       onTap: () {
         if (label == 'Country') {
           showCountryPicker(
@@ -244,7 +249,6 @@ class _HearingImpairedState extends State<HearingImpaired> {
       {'value': _phoneNumberController.text, 'label': 'Phone Number'},
       {'value': _emailController.text, 'label': 'Email'},
       {'value': _countryController.text, 'label': 'Country'},
-      {'value': _regionController.text, 'label': 'Region'},
       {'value': _cityController.text, 'label': 'City'},
       {'value': _passwordController.text, 'label': 'Password'},
       {'value': _retypePasswordController.text, 'label': 'Retype Password'},
@@ -266,7 +270,6 @@ class Registration {
   final String phoneNumber;
   final String email;
   final String country;
-  final String region;
   final String city;
 
   Registration({
@@ -275,7 +278,6 @@ class Registration {
     required this.phoneNumber,
     required this.email,
     required this.country,
-    required this.region,
     required this.city,
   });
 
@@ -286,7 +288,6 @@ class Registration {
       'phoneNumber': phoneNumber,
       'email': email,
       'country': country,
-      'region': region,
       'city': city,
     };
   }
